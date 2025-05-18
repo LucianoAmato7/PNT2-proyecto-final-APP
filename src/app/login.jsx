@@ -8,11 +8,14 @@ import {
   SafeAreaView, 
   StatusBar 
 } from 'react-native';
-import Colors from '../constants/colors.js';
+import Colors from '../constants/colors.jsx';
+import { useAuth } from '../context/authContext.jsx';
 
-export default function LoginScreen() {
+export default function () {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const { login } = useAuth()
 
   return (
     <SafeAreaView style={styles.container}>
@@ -43,7 +46,7 @@ export default function LoginScreen() {
             onChangeText={setPassword}
             secureTextEntry={false}
           />
-          <TouchableOpacity style={styles.button}>
+          <TouchableOpacity style={styles.button} onPress={login}>
             <Text style={styles.buttonText}>Ingresar</Text>
           </TouchableOpacity>
         </View>
