@@ -17,6 +17,7 @@ export const AuthProvider = ({ children }) => {
     checkAuth();
   }, []);
 
+  //Modificar logica para que trate con usuarios reales en asyncStorage
     const login = () => setIsAuth(true);
     const logout = () => setIsAuth(false);
 

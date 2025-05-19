@@ -1,6 +1,7 @@
-import { Slot, useRouter, useSegments } from "expo-router";
+import { useRouter, useSegments } from "expo-router";
 import { AuthProvider, useAuth } from "../context/authContext.jsx";
 import { useEffect, useState } from "react";
+import CustomDrawer from "../components/customDrawer.jsx";
 
 function ProtectedLayout() {
 
@@ -28,7 +29,7 @@ function ProtectedLayout() {
     }, [isAuth, segments, isNavigationReady]);
 
     return (
-        <Slot/>
+        <CustomDrawer/>
     )
 }
 
