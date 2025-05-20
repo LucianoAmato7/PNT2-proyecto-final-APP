@@ -1,30 +1,71 @@
-import 'react-native-gesture-handler';
-import { Drawer } from "expo-router/drawer";
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import {
+  DrawerContentScrollView,
+  DrawerItem,
+  DrawerItemList,
+} from "@react-navigation/drawer";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import { useRouter } from "expo-router";
+import { useAuth } from "../context/authContext";
+import { Alert, Image, View, Text } from "react-native";
 
-//Acá se agregan las pantallas que se van a mostrar en el drawer (menú desplegable)
+export default function CustomDrawerContent(props) {
+  const { logout, user } = useAuth();
+  const router = useRouter();
 
-export default function CustomDrawer (){
-    return (
-        <GestureHandlerRootView style={{ flex: 1 }}>
-            <Drawer>
-                <Drawer.Screen name="home" options={{ 
-                    title: "Inicio",
-                    drawerLabel: "Inicio",
-                    drawerIcon: ({size, color}) => <MaterialIcons name="home" size={size} color={color} />,
-                }} />
-                <Drawer.Screen name='profile' options={{
-                    title: "Perfil",
-                    drawerLabel: "Perfil",
-                    drawerIcon: ({size, color}) => <MaterialIcons name="person" size={size} color={color} />,
-                }} />
-                <Drawer.Screen name="logout" options={{ 
-                    title: "Cerrar sesión",
-                    drawerLabel: "Cerrar sesión",
-                    drawerIcon: ({size, color}) => <MaterialIcons name="logout" size={size} color={color} />,
-                }} />
-            </Drawer>
-        </GestureHandlerRootView>
-    )
+  const handleLogout = () => {
+    Alert.alert("Cerrar sesión", "¿Estás seguro de que querés cerrar sesión?", [
+      { text: "Cancelar", style: "cancel" },
+      {
+        text: "Sí",
+        onPress: () => {
+          logout();
+          router.replace("/login");
+        },
+      },
+    ]);
+  };
+
+  const avatarSource = user?.avatar
+    ? { uri: user.avatar }
+    : require("../../public/avatar-default.jpg");
+
+  return (
+    <DrawerContentScrollView
+      {...props}
+      scrollEnabled={false}
+      contentContainerStyle={{ flex: 1 }}
+    >
+      <View>
+        <Image
+          source={avatarSource}
+          style={{
+            width: 100,
+            height: 100,
+            borderRadius: 50,
+            marginTop: 25,
+            marginBottom: 15,
+            alignSelf: "center",
+          }}
+        />
+        <Text
+            style={{
+                fontSize: 20,
+                fontWeight: "bold",
+                textAlign: "center",
+                marginBottom: 25,
+            }}
+        >
+            {user?.name || "Usuario"}
+        </Text>
+      </View>
+      <DrawerItemList {...props} />
+      <DrawerItem
+        label="Cerrar sesión"
+        icon={({ size, color }) => (
+          <MaterialIcons name="logout" size={size} color={color} />
+        )}
+        onPress={handleLogout}
+      />
+    </DrawerContentScrollView>
+  );
 }
