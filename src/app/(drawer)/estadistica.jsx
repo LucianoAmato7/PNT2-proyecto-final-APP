@@ -1,5 +1,6 @@
 import { Link } from 'expo-router'
 import React, { useState } from 'react'
+import { Image } from 'react-native';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, FlatList } from 'react-native';
 
 const data = [
@@ -32,7 +33,7 @@ export default function Estadistica() {
                 <Text style={styles.title}>Estadística</Text>
             </View>
 
-            
+
             <View style={styles.containerNav}>
                 <TouchableOpacity style={styles.containerButton} onPress={() => setVistaActiva('tablaGeneral')}>
                     <Text style={styles.buttonText}>Tabla General</Text>
@@ -50,6 +51,7 @@ export default function Estadistica() {
                     <View style={styles.tableContainer}>
                         <Text style={styles.sectionTitle}>Tabla General</Text>
                         <View style={[styles.row, styles.header]}>
+                            <Text style={styles.headerCell}></Text> {/* Espacio para la imagen */}
                             <Text style={styles.headerCell}>Posición</Text>
                             <Text style={styles.headerCell}>Equipo</Text>
                             <Text style={styles.headerCell}>PJ</Text>
@@ -60,6 +62,10 @@ export default function Estadistica() {
                             keyExtractor={(item) => item.posicion.toString()}
                             renderItem={({ item }) => (
                                 <View style={styles.row}>
+                                    <Image
+                                        source={{ uri: 'https://example.com/icon.png' }}
+                                        style={styles.icon}
+                                    />
                                     <Text style={styles.cell}>{item.posicion}</Text>
                                     <Text style={styles.cell}>{item.equipo}</Text>
                                     <Text style={styles.cell}>{item.partidosJugados}</Text>
@@ -72,6 +78,10 @@ export default function Estadistica() {
 
                 {vistaActiva === 'miEquipo' && (
                     <View style={styles.tableContainer}>
+                        <Image
+                            source={{ uri: 'https://example.com/miEquipo.png' }}
+                            style={styles.image}
+                        />
                         <Text style={styles.sectionTitle}>Mi Equipo</Text>
                         <View style={[styles.row, styles.header]}>
                             <Text style={styles.headerCell}>Nº Jugador</Text>
@@ -98,6 +108,10 @@ export default function Estadistica() {
 
                 {vistaActiva === 'jugador' && (
                     <View style={styles.tableContainer}>
+                        <Image
+                            source={{ uri: 'https://example.com/jugador.png' }}
+                            style={styles.image}
+                        />
                         <Text style={styles.sectionTitle}>Estadísticas de Jugador</Text>
                         <View style={[styles.row, styles.header]}>
                             <Text style={styles.headerCell}>Min. Jugados</Text>
@@ -187,4 +201,16 @@ const styles = StyleSheet.create({
         flex: 1,
         textAlign: 'center',
     },
+    image: {
+        width: '100%',
+        height: 150,
+        resizeMode: 'cover',
+        marginBottom: 10,
+    },
+    icon: {
+        width: 10,
+        height: 10,
+        marginRight: 5, 
+    },
+
 });
