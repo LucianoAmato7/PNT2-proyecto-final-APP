@@ -33,7 +33,6 @@ export default function Estadistica() {
                 <Text style={styles.title}>Estadística</Text>
             </View>
 
-
             <View style={styles.containerNav}>
                 <TouchableOpacity style={styles.containerButton} onPress={() => setVistaActiva('tablaGeneral')}>
                     <Text style={styles.buttonText}>Tabla General</Text>
@@ -46,97 +45,99 @@ export default function Estadistica() {
                 </TouchableOpacity>
             </View>
 
-            <ScrollView>
-                {vistaActiva === 'tablaGeneral' && (
-                    <View style={styles.tableContainer}>
-                        <Text style={styles.sectionTitle}>Tabla General</Text>
-                        <View style={[styles.row, styles.header]}>
-                            <Text style={styles.headerCell}></Text> {/* Espacio para la imagen */}
-                            <Text style={styles.headerCell}>Posición</Text>
-                            <Text style={styles.headerCell}>Equipo</Text>
-                            <Text style={styles.headerCell}>PJ</Text>
-                            <Text style={styles.headerCell}>Puntos</Text>
-                        </View>
-                        <FlatList
-                            data={data}
-                            keyExtractor={(item) => item.posicion.toString()}
-                            renderItem={({ item }) => (
-                                <View style={styles.row}>
-                                    <Image
-                                        source={{ uri: 'https://example.com/icon.png' }}
-                                        style={styles.icon}
-                                    />
-                                    <Text style={styles.cell}>{item.posicion}</Text>
-                                    <Text style={styles.cell}>{item.equipo}</Text>
-                                    <Text style={styles.cell}>{item.partidosJugados}</Text>
-                                    <Text style={styles.cell}>{item.puntos}</Text>
-                                </View>
-                            )}
-                        />
-                    </View>
-                )}
 
-                {vistaActiva === 'miEquipo' && (
-                    <View style={styles.tableContainer}>
-                        <Image
-                            source={{ uri: 'https://example.com/miEquipo.png' }}
-                            style={styles.image}
-                        />
-                        <Text style={styles.sectionTitle}>Mi Equipo</Text>
-                        <View style={[styles.row, styles.header]}>
-                            <Text style={styles.headerCell}>Nº Jugador</Text>
-                            <Text style={styles.headerCell}>Apellido</Text>
-                            <Text style={styles.headerCell}>Min. Jugados</Text>
-                            <Text style={styles.headerCell}>Sets e/c</Text>
-                            <Text style={styles.headerCell}>Sets a/f</Text>
+            {vistaActiva === 'tablaGeneral' && (
+                <FlatList
+                    ListHeaderComponent={() => (
+                        <>
+                            <Text style={styles.sectionTitle}>Tabla General</Text>
+                            <View style={[styles.row, styles.header]}>
+                                <View style={{ width: 10 }} />
+                                <Text style={styles.headerCell}>Posición</Text>
+                                <Text style={styles.headerCell}>Equipo</Text>
+                                <Text style={styles.headerCell}>PJ</Text>
+                                <Text style={styles.headerCell}>Puntos</Text>
+                            </View>
+                        </>
+                    )}
+                    data={data}
+                    keyExtractor={(item) => item.posicion.toString()}
+                    renderItem={({ item }) => (
+                        <View style={styles.row}>
+                            <Image
+                                source={{ uri: 'https://example.com/icon.png' }}
+                                style={styles.icon}
+                            />
+                            <Text style={styles.cell}>{item.posicion}</Text>
+                            <Text style={styles.cell}>{item.equipo}</Text>
+                            <Text style={styles.cell}>{item.partidosJugados}</Text>
+                            <Text style={styles.cell}>{item.puntos}</Text>
                         </View>
-                        <FlatList
-                            data={jugadores}
-                            keyExtractor={(item) => item.numero.toString()}
-                            renderItem={({ item }) => (
-                                <View style={styles.row}>
-                                    <Text style={styles.cell}>{item.numero}</Text>
-                                    <Text style={styles.cell}>{item.apellido}</Text>
-                                    <Text style={styles.cell}>{item.minJugados}</Text>
-                                    <Text style={styles.cell}>{item.setsEC}</Text>
-                                    <Text style={styles.cell}>{item.setsAF}</Text>
-                                </View>
-                            )}
-                        />
-                    </View>
-                )}
+                    )}
+                />
+            )}
 
-                {vistaActiva === 'jugador' && (
-                    <View style={styles.tableContainer}>
-                        <Image
-                            source={{ uri: 'https://example.com/jugador.png' }}
-                            style={styles.image}
-                        />
-                        <Text style={styles.sectionTitle}>Estadísticas de Jugador</Text>
-                        <View style={[styles.row, styles.header]}>
-                            <Text style={styles.headerCell}>Min. Jugados</Text>
-                            <Text style={styles.headerCell}>Hits</Text>
-                            <Text style={styles.headerCell}>Catchs</Text>
-                            <Text style={styles.headerCell}>Amarilla</Text>
-                            <Text style={styles.headerCell}>Roja</Text>
+
+            {vistaActiva === 'miEquipo' && (
+                <FlatList
+                    ListHeaderComponent={() => (
+                        <>
+                            <Image source={{ uri: 'https://example.com/miEquipo.png' }} style={styles.image} />
+                            <Text style={styles.sectionTitle}>Mi Equipo</Text>
+                            <View style={[styles.row, styles.header]}>
+                                <Text style={styles.headerCell}>Nº Jugador</Text>
+                                <Text style={styles.headerCell}>Apellido</Text>
+                                <Text style={styles.headerCell}>Min. Jugados</Text>
+                                <Text style={styles.headerCell}>Sets e/c</Text>
+                                <Text style={styles.headerCell}>Sets a/f</Text>
+                            </View>
+                        </>
+                    )}
+                    data={jugadores}
+                    keyExtractor={(item) => item.numero.toString()}
+                    renderItem={({ item }) => (
+                        <View style={styles.row}>
+                            <Text style={styles.cell}>{item.numero}</Text>
+                            <Text style={styles.cell}>{item.apellido}</Text>
+                            <Text style={styles.cell}>{item.minJugados}</Text>
+                            <Text style={styles.cell}>{item.setsEC}</Text>
+                            <Text style={styles.cell}>{item.setsAF}</Text>
                         </View>
-                        <FlatList
-                            data={jugadoresDetalles}
-                            keyExtractor={(item) => item.minJugados.toString()}
-                            renderItem={({ item }) => (
-                                <View style={styles.row}>
-                                    <Text style={styles.cell}>{item.minJugados}</Text>
-                                    <Text style={styles.cell}>{item.hits}</Text>
-                                    <Text style={styles.cell}>{item.catchs}</Text>
-                                    <Text style={styles.cell}>{item.amarilla}</Text>
-                                    <Text style={styles.cell}>{item.roja}</Text>
-                                </View>
-                            )}
-                        />
-                    </View>
-                )}
-            </ScrollView>
+                    )}
+                />
+            )}
+
+
+            {vistaActiva === 'jugador' && (
+                <FlatList
+                    ListHeaderComponent={() => (
+                        <>
+                            <Image source={{ uri: 'https://example.com/icon.png' }} style={styles.image} />
+                            <Text style={styles.sectionTitle}>Estadísticas de Jugador</Text>
+                            <View style={[styles.row, styles.header]}>
+                                <Text style={styles.headerCell}>Min. Jugados</Text>
+                                <Text style={styles.headerCell}>Hits</Text>
+                                <Text style={styles.headerCell}>Catchs</Text>
+                                <Text style={styles.headerCell}>Amarilla</Text>
+                                <Text style={styles.headerCell}>Roja</Text>
+                            </View>
+                        </>
+                    )}
+                    data={jugadoresDetalles}
+                    keyExtractor={(item) => item.minJugados.toString()}
+                    renderItem={({ item }) => (
+                        <View style={styles.row}>
+                            <Text style={styles.cell}>{item.minJugados}</Text>
+                            <Text style={styles.cell}>{item.hits}</Text>
+                            <Text style={styles.cell}>{item.catchs}</Text>
+                            <Text style={styles.cell}>{item.amarilla}</Text>
+                            <Text style={styles.cell}>{item.roja}</Text>
+                        </View>
+                    )}
+                />
+            )}
         </View>
+
     );
 }
 
@@ -210,7 +211,8 @@ const styles = StyleSheet.create({
     icon: {
         width: 10,
         height: 10,
-        marginRight: 5, 
+        marginRight: 5,
     },
+
 
 });
