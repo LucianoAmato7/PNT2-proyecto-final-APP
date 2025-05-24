@@ -65,7 +65,7 @@ export default function Estadistica() {
                     renderItem={({ item }) => (
                         <View style={styles.row}>
                             <Image
-                                source={{ uri: 'https://example.com/icon.png' }}
+                                source={require("./../../../assets/escudo.png")}
                                 style={styles.icon}
                             />
                             <Text style={styles.cell}>{item.posicion}</Text>
@@ -82,7 +82,7 @@ export default function Estadistica() {
                 <FlatList
                     ListHeaderComponent={() => (
                         <>
-                            <Image source={{ uri: 'https://example.com/miEquipo.png' }} style={styles.image} />
+                            <Image source={require("./../../../assets/escudo.png")}  style={styles.image} />
                             <Text style={styles.sectionTitle}>Mi Equipo</Text>
                             <View style={[styles.row, styles.header]}>
                                 <Text style={styles.headerCell}>Nº Jugador</Text>
@@ -112,7 +112,7 @@ export default function Estadistica() {
                 <FlatList
                     ListHeaderComponent={() => (
                         <>
-                            <Image source={{ uri: 'https://example.com/icon.png' }} style={styles.image} />
+                            <Image source={require("./../../../assets/escudo.png")} style={styles.image} />
                             <Text style={styles.sectionTitle}>Estadísticas de Jugador</Text>
                             <View style={[styles.row, styles.header]}>
                                 <Text style={styles.headerCell}>Min. Jugados</Text>
