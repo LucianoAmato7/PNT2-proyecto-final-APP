@@ -22,6 +22,12 @@ export default function MainDrawer (){
                     drawerLabel: "Perfil",
                     drawerIcon: ({size, color}) => <MaterialIcons name="person" size={size} color={color} />,
                 }} />
+                <Drawer.Screen name="estadistica" options={{
+                    headerTitle: "Estadística",
+                    headerTitleAlign: "center",
+                    drawerLabel: "Estadística",
+                    drawerIcon: ({size, color}) => <MaterialIcons name="bar-chart" size={size} color={color} />,
+                }} />
             </Drawer>
         </GestureHandlerRootView>
     )

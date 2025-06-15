@@ -1,5 +1,5 @@
 import { useRouter, useSegments } from "expo-router";
-import { AuthProvider, useAuth } from "../context/authContext.jsx";
+import { AuthProvider, useAuth } from "../../context/authContext.jsx";
 import { useEffect, useState } from "react";
 import { Slot } from "expo-router";
 

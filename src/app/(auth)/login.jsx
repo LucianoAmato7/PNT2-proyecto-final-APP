@@ -1,57 +1,73 @@
 import { useState } from 'react';
-import { 
-  View, 
-  Text, 
-  TextInput, 
-  TouchableOpacity, 
-  StyleSheet, 
-  SafeAreaView, 
-  StatusBar 
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+  StatusBar,
+  Alert,
 } from 'react-native';
-import Colors from '../constants/colors.jsx';
-import { useAuth } from '../context/authContext.jsx';
+import Colors from '../../constants/colors.jsx';
+import { useAuth } from '../../context/authContext.jsx';
+import { useRouter } from 'expo-router';
 
-export default function () {
+export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const { login } = useAuth();
+  const router = useRouter();
+  
+  const handleLogin = async () => {
+    if (!email || !password) {
+      return Alert.alert("Campos requeridos", "Ingresá email y contraseña");
+    }
 
-  const { login } = useAuth()
+    const success = await login(email.toLowerCase(), password);
+    if (!success) {
+      Alert.alert("Error", "Credenciales incorrectas o usuario no encontrado");
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
-      
+
       <View style={styles.content}>
         <Text style={styles.title}>JugAr</Text>
-        
+
         <View style={styles.formSection}>
-          <Text style={styles.sectionTitle}>Crea una cuenta</Text>
+          <Text style={styles.sectionTitle}>Iniciar sesión</Text>
+
           <TextInput
             style={styles.input}
             placeholder="Email"
+            autoCapitalize="none"
             value={email}
             onChangeText={setEmail}
           />
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Crear cuenta</Text>
-          </TouchableOpacity>
-        </View>
-        
-        <View style={styles.formSection}>
-          <Text style={styles.sectionTitle}>O ingresa tus datos para iniciar</Text>
+
           <TextInput
             style={styles.input}
             placeholder="Contraseña"
+            secureTextEntry
             value={password}
             onChangeText={setPassword}
-            secureTextEntry={false}
           />
-          <TouchableOpacity style={styles.button} onPress={login}>
+
+          <TouchableOpacity style={styles.button} onPress={handleLogin}>
             <Text style={styles.buttonText}>Ingresar</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.linkButton}
+            onPress={() => {router.replace("/register")}}
+          >
+            <Text style={styles.linkText}>¿No tenés cuenta? Registrate</Text>
           </TouchableOpacity>
         </View>
       </View>
-      
     </SafeAreaView>
   );
 }
@@ -67,7 +83,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontSize: 24,
+    fontSize: 28,
     fontWeight: 'bold',
     textAlign: 'center',
     marginBottom: 40,
@@ -76,7 +92,7 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   sectionTitle: {
-    fontSize: 16,
+    fontSize: 18,
     textAlign: 'center',
     marginBottom: 15,
   },
@@ -100,12 +116,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
   },
-  bottomIndicator: {
-    width: 40,
-    height: 5,
-    backgroundColor: 'black',
-    borderRadius: 3,
-    alignSelf: 'center',
-    marginBottom: 10,
+  linkButton: {
+    marginTop: 15,
+    alignItems: 'center',
+  },
+  linkText: {
+    color: Colors.buttons,
+    textDecorationLine: 'underline',
   },
 });
