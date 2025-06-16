@@ -39,7 +39,7 @@ export default function RegisterScreen() {
   };
 
   const handleRegister = async () => {
-    const { name, email, avatar } = form;
+    const { name, email, password } = form;
     if (!name || !email || !password) {
       return Alert.alert(
         "Campos obligatorios",
@@ -50,7 +50,7 @@ export default function RegisterScreen() {
     const newUser = {
       ...form,
       email: email.toLowerCase(),
-      avatar: avatar || `https://robohash.org/${email.toLowerCase()}`,
+      avatar: `https://robohash.org/${email.toLowerCase()}`,
       role: "player",
       isActive: true,
     };
