@@ -1,40 +1,17 @@
-import { useRouter, useSegments } from "expo-router";
-import { AuthProvider, useAuth } from "../../context/authContext.jsx";
-import { useEffect, useState } from "react";
 import { Slot } from "expo-router";
+import { useAuth } from "../../context/authContext";
+import { useEffect } from "react";
+import { useRouter } from "expo-router";
 
-function ProtectedRoutes() {
+export default function AuthLayout() {
   const { isAuth } = useAuth();
-  const segments = useSegments();
   const router = useRouter();
-  const [isNavigationReady, setIsNavigationReady] = useState(false);
 
   useEffect(() => {
-    if (segments.length > 0) {
-      setIsNavigationReady(true);
+    if (isAuth) {
+      router.replace("/(drawer)/home");
     }
-  }, [segments]);
-
-  useEffect(() => {
-    if (!isNavigationReady) return;
-
-    const currentRoute = segments[0]; // 'login' o '(drawer)'
-    const isInLogin = currentRoute === "login";
-
-    if (!isAuth && !isInLogin) {
-      router.replace("/login");
-    } else if (isAuth && isInLogin) {
-      router.replace("/home");
-    }
-  }, [isAuth, segments, isNavigationReady]);
+  }, [isAuth]);
 
   return <Slot />;
-}
-
-export default function RootLayout() {
-  return (
-    <AuthProvider>
-      <ProtectedRoutes />
-    </AuthProvider>
-  );
 }

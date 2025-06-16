@@ -45,12 +45,14 @@ export const AuthProvider = ({ children }) => {
   // Login con email y contraseña
   const login = async (email, password) => {
     try {
-      const usersJSON = await AsyncStorage.getItem("users");
+      const usersJSON = await AsyncStorage.getItem("users");      
       const users = usersJSON ? JSON.parse(usersJSON) : [];
 
+      console.log("Usuarios registrados:", users);
+      
       const found = users.find(
         (u) => u.email === email && u.password === password
-      );
+      );      
 
       if (found) {
         await AsyncStorage.setItem("currentUser", JSON.stringify(found));
@@ -66,7 +68,6 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  // Cerrar sesión
   const logout = async () => {
     await AsyncStorage.removeItem("currentUser");
     setUser(null);

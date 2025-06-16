@@ -1,25 +1,23 @@
 import { View, Text, Image, StyleSheet } from "react-native";
+import { useAuth } from "../../context/authContext";
 
 export default function Profile() {
+    const {user} = useAuth();
+
     return (
         <View style={styles.container}>
             
             <Image 
-                source={require("./../../../assets/avatarPerfil.png")}
+                source={user?.avatar ? { uri: user.avatar } : require("../../../public/avatar-default.jpg")}
                 style={styles.profileImage} 
             />
 
-            
             <View style={styles.infoContainer}>
-                <Text style={styles.infoText}><Text style={styles.label}>Nombre:</Text> Cosme</Text>
-                <Text style={styles.infoText}><Text style={styles.label}>Apellido:</Text> Fulanito</Text>
-                <Text style={styles.infoText}><Text style={styles.label}>Edad:</Text> 25 años</Text>
-                <Text style={styles.infoText}><Text style={styles.label}>Fecha de nacimiento:</Text> 10/05/2000</Text>
-                <Text style={styles.infoText}><Text style={styles.label}>Equipo:</Text> Los Cosmonautas</Text>
-                <Text style={styles.infoText}><Text style={styles.label}>Altura:</Text> 1.80 m</Text>
-                <Text style={styles.infoText}><Text style={styles.label}>Peso:</Text> 75 kg</Text>
-                <Text style={styles.infoText}><Text style={styles.label}>Nacionalidad:</Text> Argentina</Text>
-                <Text style={styles.infoText}><Text style={styles.label}>Domicilio:</Text> Buenos Aires</Text>
+                <Text style={styles.label}>Nombre: {` ${user?.name || "Usuario"}`}</Text>
+                <Text style={styles.label}>Email: {` ${user?.email || "No disponible"}`}</Text>
+                <Text style={styles.label}>Equipo: {` ${user?.team || "No asignado"}`}</Text>
+                <Text style={styles.label}>Posición: {` ${user?.position || "No asignada"}`}</Text>
+                <Text style={styles.label}>Rol: {` ${user?.role || "Jugador"}`}</Text>
             </View>
         </View>
     );
@@ -33,8 +31,8 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     profileImage: {
-        width: 220,
-        height: 220,
+        width: 210,
+        height: 210,
         borderRadius: 60,
         marginBottom: 100,
     },
@@ -44,7 +42,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
     },
     label: {
-        fontWeight: "bold",
         fontSize: 18,
     },
     infoText: {

@@ -62,7 +62,7 @@ export default function LoginScreen() {
 
           <TouchableOpacity
             style={styles.linkButton}
-            onPress={() => {router.replace("/register")}}
+            onPress={() => {router.replace("/(auth)/register")}}
           >
             <Text style={styles.linkText}>¿No tenés cuenta? Registrate</Text>
           </TouchableOpacity>

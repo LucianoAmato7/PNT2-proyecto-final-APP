@@ -19,7 +19,6 @@ export default function CustomDrawerContent(props) {
         text: "Sí",
         onPress: () => {
           logout();
-          router.replace("/login");
         },
       },
     ]);
