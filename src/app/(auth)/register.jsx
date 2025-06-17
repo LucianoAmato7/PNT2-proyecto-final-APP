@@ -50,7 +50,6 @@ export default function RegisterScreen() {
     const newUser = {
       ...form,
       email: email.toLowerCase(),
-      avatar: `https://robohash.org/${email.toLowerCase()}`,
       role: "player",
       isActive: true,
     };

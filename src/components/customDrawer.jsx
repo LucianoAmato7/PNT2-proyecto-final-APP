@@ -7,6 +7,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { useRouter } from "expo-router";
 import { useAuth } from "../context/authContext";
 import { Alert, Image, View, Text } from "react-native";
+import Images from "../constants/images";
 
 export default function CustomDrawerContent(props) {
   const { logout, user } = useAuth();
@@ -26,7 +27,7 @@ export default function CustomDrawerContent(props) {
 
   const avatarSource = user?.avatar
     ? { uri: user.avatar }
-    : require("../../public/avatar-default.jpg");
+    : Images.avatarDefault;
 
   return (
     <DrawerContentScrollView

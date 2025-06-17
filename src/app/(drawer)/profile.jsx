@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from "react";
 import {
   View,
   Text,
@@ -7,11 +7,13 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
-} from 'react-native';
-import Colors from '../../constants/colors.jsx';
-import { useAuth } from '../../context/authContext.jsx';
-import * as ImagePicker from 'expo-image-picker';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+} from "react-native";
+import Colors from "../../constants/colors.jsx";
+import { useAuth } from "../../context/authContext.jsx";
+import * as ImagePicker from "expo-image-picker";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { uploadImageToSupabase } from "../../utils/uploadImage.js";
+import Images from "../../constants/images.jsx";
 
 export default function ProfileScreen() {
   const { user, setUser } = useAuth();
@@ -19,8 +21,8 @@ export default function ProfileScreen() {
 
   const updateAvatar = async () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
-    if (status !== 'granted') {
-      Alert.alert('Permiso denegado', 'Se necesita acceso a la cámara');
+    if (status !== "granted") {
+      Alert.alert("Permiso denegado", "Se necesita acceso a la cámara");
       return;
     }
 
@@ -30,23 +32,30 @@ export default function ProfileScreen() {
       quality: 1,
     });
 
-    if (!result.cancelled) {
+    const uri = result?.assets?.[0]?.uri;
+
+    if (uri) {
       try {
         setLoading(true);
-        const updatedUser = { ...user, avatar: result.uri };
-        const usersJSON = await AsyncStorage.getItem('users');
+        
+        const uploadedUrl = await uploadImageToSupabase(uri);
+        if (!uploadedUrl) throw new Error("No se pudo subir la imagen");
+
+        const updatedUser = { ...user, avatar: uploadedUrl };
+        const usersJSON = await AsyncStorage.getItem("users");
         const users = usersJSON ? JSON.parse(usersJSON) : [];
 
         const updatedUsers = users.map((u) =>
           u.email === user.email ? updatedUser : u
         );
 
-        await AsyncStorage.setItem('users', JSON.stringify(updatedUsers));
-        await AsyncStorage.setItem('currentUser', JSON.stringify(updatedUser));
+        await AsyncStorage.setItem("users", JSON.stringify(updatedUsers));
+        await AsyncStorage.setItem("currentUser", JSON.stringify(updatedUser));
         setUser(updatedUser);
-        Alert.alert('Éxito', 'Avatar actualizado');
+        Alert.alert("Éxito", "Avatar actualizado");
       } catch (error) {
-        Alert.alert('Error', 'No se pudo actualizar el avatar', error);
+        console.error(error);
+        Alert.alert("Error", "No se pudo actualizar el avatar");
       } finally {
         setLoading(false);
       }
@@ -58,11 +67,17 @@ export default function ProfileScreen() {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Image
-        source={{ uri: user.avatar }}
+        source={user.avatar ? { uri: user.avatar } : Images.avatarDefault}
         style={styles.avatar}
       />
-      <TouchableOpacity style={styles.button} onPress={updateAvatar} disabled={loading}>
-        <Text style={styles.buttonText}>{loading ? 'Actualizando...' : 'Cambiar Foto'}</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={updateAvatar}
+        disabled={loading}
+      >
+        <Text style={styles.buttonText}>
+          {loading ? "Actualizando..." : "Cambiar Foto"}
+        </Text>
       </TouchableOpacity>
 
       <View style={styles.infoContainer}>
@@ -100,7 +115,7 @@ export default function ProfileScreen() {
         <Text style={styles.value}>{user.role}</Text>
 
         <Text style={styles.label}>Activo:</Text>
-        <Text style={styles.value}>{user.isActive ? 'Sí' : 'No'}</Text>
+        <Text style={styles.value}>{user.isActive ? "Sí" : "No"}</Text>
       </View>
     </ScrollView>
   );
@@ -108,9 +123,9 @@ export default function ProfileScreen() {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
+    alignItems: "center",
     padding: 20,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   avatar: {
     width: 150,
@@ -126,30 +141,30 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   buttonText: {
-    color: 'white',
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
     fontSize: 16,
   },
   infoContainer: {
-    width: '100%',
+    width: "100%",
     marginTop: 10,
-    backgroundColor: '#F9F9F9',
+    backgroundColor: "#F9F9F9",
     borderRadius: 10,
     padding: 20,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 2,
   },
   label: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: 14,
-    color: '#333',
+    color: "#333",
   },
   value: {
     marginBottom: 12,
     fontSize: 16,
-    color: '#444',
+    color: "#444",
   },
 });

@@ -20,8 +20,8 @@ export const AuthProvider = ({ children }) => {
     checkAuth();
   }, []);
 
-  // Registrar nuevo usuario (incluye contraseña)
   const register = async (newUser) => {
+    
     try {
       const usersJSON = await AsyncStorage.getItem("users");
       const users = usersJSON ? JSON.parse(usersJSON) : [];
@@ -82,6 +82,7 @@ export const AuthProvider = ({ children }) => {
         login,
         register,
         logout,
+        setUser
       }}
     >
       {children}
