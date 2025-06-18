@@ -52,6 +52,15 @@ export default function RegisterScreen() {
       email: email.toLowerCase(),
       role: "player",
       isActive: true,
+      statistics: {
+        goals: 12,
+        assists: 7,
+        yellowCards: 2,
+        redCards: 1,
+        shotsOnTarget: 15,
+        matchesPlayed: 8,
+        minutesPlayed: 630,
+      },
     };
 
     try {
