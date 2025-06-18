@@ -1,0 +1,23 @@
+{
+  "name": "Lionel Messi",
+  "email": "leo@club.com",
+  "avatar": "https://...",
+  "team": "A",
+  "position": "Delantero",
+  "nationality": "Argentina",
+  "birthdate": "1987-06-24",
+  "height": 170,
+  "weight": 72,
+  "role": "player",
+  "isActive": true,
+  "password": "securepassword123",
+  "statistics": {
+    "goals": 12,
+    "assists": 7,
+    "yellowCards": 2,
+    "redCards": 1,
+    "shotsOnTarget": 15,
+    "matchesPlayed": 8,
+    "minutesPlayed": 630
+  }
+}
