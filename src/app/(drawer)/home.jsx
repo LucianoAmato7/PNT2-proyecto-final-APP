@@ -86,7 +86,7 @@ export default function LionelStatsScreen() {
 
       <TouchableOpacity
         style={styles.viewStatsButton}
-        onPress={() => navigation.navigate("profile")}
+        onPress={() => navigation.navigate("estadistica")}
       >
         <Text style={styles.viewStatsText}>Ver estadísticas</Text>
       </TouchableOpacity>
@@ -204,3 +204,5 @@ const styles = StyleSheet.create({
     fontFamily: "System",
   },
 });
+
+
