@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import * as Print from 'expo-print';
 import * as Sharing from 'expo-sharing';
 
-export const EstadoSocio = () => {
+function EstadoSocio () {
   const [estadoActivo, setEstadoActivo] = useState(false);
   const [monto, setMonto] = useState(5000); // Valor dinámico
 
@@ -90,3 +90,5 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
 });
+
+export default EstadoSocio;

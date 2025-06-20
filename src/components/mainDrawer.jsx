@@ -16,7 +16,7 @@ export default function MainDrawer (){
                     drawerLabel: "Inicio",
                     drawerIcon: ({size, color}) => <MaterialIcons name="home" size={size} color={color} />,
                 }} />
-                <Drawer.Screen name='profile' options={{
+                <Drawer.Screen name="profile" options={{
                     headerTitle: "Perfil",
                     headerTitleAlign: "center",
                     drawerLabel: "Perfil",
@@ -26,6 +26,12 @@ export default function MainDrawer (){
                     headerTitle: "Estadística",
                     headerTitleAlign: "center",
                     drawerLabel: "Estadística",
+                    drawerIcon: ({size, color}) => <MaterialIcons name="bar-chart" size={size} color={color} />,
+                }} />
+                  <Drawer.Screen name="estadoSocio" options={{
+                    headerTitle: "Estado socio",
+                    headerTitleAlign: "center",
+                    drawerLabel: "Estado socio",
                     drawerIcon: ({size, color}) => <MaterialIcons name="bar-chart" size={size} color={color} />,
                 }} />
             </Drawer>
