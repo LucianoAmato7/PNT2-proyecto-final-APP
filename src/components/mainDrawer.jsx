@@ -32,7 +32,7 @@ export default function MainDrawer (){
                     headerTitle: "Estado socio",
                     headerTitleAlign: "center",
                     drawerLabel: "Estado socio",
-                    drawerIcon: ({size, color}) => <MaterialIcons name="bar-chart" size={size} color={color} />,
+                    drawerIcon: ({size, color}) => <MaterialIcons name="payment" size={size} color={color} />,
                 }} />
             </Drawer>
         </GestureHandlerRootView>
