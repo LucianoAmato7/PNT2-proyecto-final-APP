@@ -8,10 +8,13 @@ import {
   SafeAreaView,
   StatusBar,
   Alert,
+  Image,
 } from 'react-native';
 import Colors from '../../constants/colors.jsx';
 import { useAuth } from '../../context/authContext.jsx';
 import { useRouter } from 'expo-router';
+import logo from '../../../assets/logo.png';
+
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -35,7 +38,7 @@ export default function LoginScreen() {
       <StatusBar barStyle="dark-content" />
 
       <View style={styles.content}>
-        <Text style={styles.title}>JugAr</Text>
+        <Text style={styles.title}><Image source={logo} style={styles.logo} resizeMode="contain" /></Text>
 
         <View style={styles.formSection}>
           <Text style={styles.sectionTitle}>Iniciar sesión</Text>
@@ -124,4 +127,10 @@ const styles = StyleSheet.create({
     color: Colors.buttons,
     textDecorationLine: 'underline',
   },
+  logo: {
+  width: 350,
+  height: 150,
+  alignSelf: 'center',
+  marginBottom: 40,
+},
 });
