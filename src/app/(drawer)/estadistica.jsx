@@ -203,16 +203,16 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     image: {
-        width: '100%',
+        width: 150,
         height: 150,
-        resizeMode: 'cover',
         marginBottom: 10,
+        alignSelf: 'center',
     },
     icon: {
-        width: 10,
-        height: 10,
+        width: 20,
+        height: 20,
         marginRight: 5,
+        alignSelf: 'center',
+        marginLeft: 3,
     },
-
-
 });
