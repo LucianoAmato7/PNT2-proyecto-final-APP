@@ -2,6 +2,7 @@ import { Link } from 'expo-router'
 import React, { useState } from 'react'
 import { Image } from 'react-native';
 import { StyleSheet, View, Text, TouchableOpacity, ScrollView, FlatList } from 'react-native';
+import { useAuth } from '../../context/authContext';
 
 const data = [
     { posicion: 1, equipo: 'Equipo A', partidosJugados: 10, puntos: 25 },
@@ -17,128 +18,109 @@ const jugadores = [
     { numero: 4, apellido: 'Fernández', minJugados: 95, setsEC: 4, setsAF: 1 },
 ];
 
-const jugadoresDetalles = [
-    { minJugados: 90, hits: 15, catchs: 5, amarilla: 1, roja: 0 },
-    { minJugados: 85, hits: 12, catchs: 3, amarilla: 0, roja: 1 },
-    { minJugados: 80, hits: 10, catchs: 6, amarilla: 2, roja: 0 },
-    { minJugados: 95, hits: 18, catchs: 4, amarilla: 0, roja: 0 },
-];
-
 export default function Estadistica() {
-    const [vistaActiva, setVistaActiva] = useState('tablaGeneral');
+  const [vistaActiva, setVistaActiva] = useState('tablaGeneral');
+  const { user } = useAuth(); // Acceder al usuario logueado
 
-    return (
-        <View style={styles.container}>
-            <View style={styles.containerTittle}>
-                <Text style={styles.title}>Estadística</Text>
+  return (
+    <View style={styles.container}>
+      <View style={styles.containerTittle}>
+        <Text style={styles.title}>Estadística</Text>
+      </View>
+
+      <View style={styles.containerNav}>
+        <TouchableOpacity style={styles.containerButton} onPress={() => setVistaActiva('tablaGeneral')}>
+          <Text style={styles.buttonText}>Tabla General</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.containerButton} onPress={() => setVistaActiva('miEquipo')}>
+          <Text style={styles.buttonText}>Mi Equipo</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.containerButton} onPress={() => setVistaActiva('jugador')}>
+          <Text style={styles.buttonText}>Jugador</Text>
+        </TouchableOpacity>
+      </View>
+
+      {vistaActiva === 'tablaGeneral' && (
+        <FlatList
+          ListHeaderComponent={() => (
+            <>
+              <Text style={styles.sectionTitle}>Tabla General</Text>
+              <View style={[styles.row, styles.header]}>
+                <View style={{ width: 10 }} />
+                <Text style={styles.headerCell}>Posición</Text>
+                <Text style={styles.headerCell}>Equipo</Text>
+                <Text style={styles.headerCell}>PJ</Text>
+                <Text style={styles.headerCell}>Puntos</Text>
+              </View>
+            </>
+          )}
+          data={data}
+          keyExtractor={(item) => item.posicion.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.row}>
+              <Image source={require('./../../../assets/escudo.png')} style={styles.icon} />
+              <Text style={styles.cell}>{item.posicion}</Text>
+              <Text style={styles.cell}>{item.equipo}</Text>
+              <Text style={styles.cell}>{item.partidosJugados}</Text>
+              <Text style={styles.cell}>{item.puntos}</Text>
             </View>
+          )}
+        />
+      )}
 
-            <View style={styles.containerNav}>
-                <TouchableOpacity style={styles.containerButton} onPress={() => setVistaActiva('tablaGeneral')}>
-                    <Text style={styles.buttonText}>Tabla General</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.containerButton} onPress={() => setVistaActiva('miEquipo')}>
-                    <Text style={styles.buttonText}>Mi Equipo</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.containerButton} onPress={() => setVistaActiva('jugador')}>
-                    <Text style={styles.buttonText}>Jugador</Text>
-                </TouchableOpacity>
+      {vistaActiva === 'miEquipo' && (
+        <FlatList
+          ListHeaderComponent={() => (
+            <>
+              <Image source={require('./../../../assets/escudo.png')} style={styles.image} />
+              <Text style={styles.sectionTitle}>Mi Equipo</Text>
+              <View style={[styles.row, styles.header]}>
+                <Text style={styles.headerCell}>Nº Jugador</Text>
+                <Text style={styles.headerCell}>Apellido</Text>
+                <Text style={styles.headerCell}>Min. Jugados</Text>
+                <Text style={styles.headerCell}>Sets e/c</Text>
+                <Text style={styles.headerCell}>Sets a/f</Text>
+              </View>
+            </>
+          )}
+          data={jugadores}
+          keyExtractor={(item) => item.numero.toString()}
+          renderItem={({ item }) => (
+            <View style={styles.row}>
+              <Text style={styles.cell}>{item.numero}</Text>
+              <Text style={styles.cell}>{item.apellido}</Text>
+              <Text style={styles.cell}>{item.minJugados}</Text>
+              <Text style={styles.cell}>{item.setsEC}</Text>
+              <Text style={styles.cell}>{item.setsAF}</Text>
             </View>
+          )}
+        />
+      )}
 
-
-            {vistaActiva === 'tablaGeneral' && (
-                <FlatList
-                    ListHeaderComponent={() => (
-                        <>
-                            <Text style={styles.sectionTitle}>Tabla General</Text>
-                            <View style={[styles.row, styles.header]}>
-                                <View style={{ width: 10 }} />
-                                <Text style={styles.headerCell}>Posición</Text>
-                                <Text style={styles.headerCell}>Equipo</Text>
-                                <Text style={styles.headerCell}>PJ</Text>
-                                <Text style={styles.headerCell}>Puntos</Text>
-                            </View>
-                        </>
-                    )}
-                    data={data}
-                    keyExtractor={(item) => item.posicion.toString()}
-                    renderItem={({ item }) => (
-                        <View style={styles.row}>
-                            <Image
-                                source={require("./../../../assets/escudo.png")}
-                                style={styles.icon}
-                            />
-                            <Text style={styles.cell}>{item.posicion}</Text>
-                            <Text style={styles.cell}>{item.equipo}</Text>
-                            <Text style={styles.cell}>{item.partidosJugados}</Text>
-                            <Text style={styles.cell}>{item.puntos}</Text>
-                        </View>
-                    )}
-                />
-            )}
-
-
-            {vistaActiva === 'miEquipo' && (
-                <FlatList
-                    ListHeaderComponent={() => (
-                        <>
-                            <Image source={require("./../../../assets/escudo.png")}  style={styles.image} />
-                            <Text style={styles.sectionTitle}>Mi Equipo</Text>
-                            <View style={[styles.row, styles.header]}>
-                                <Text style={styles.headerCell}>Nº Jugador</Text>
-                                <Text style={styles.headerCell}>Apellido</Text>
-                                <Text style={styles.headerCell}>Min. Jugados</Text>
-                                <Text style={styles.headerCell}>Sets e/c</Text>
-                                <Text style={styles.headerCell}>Sets a/f</Text>
-                            </View>
-                        </>
-                    )}
-                    data={jugadores}
-                    keyExtractor={(item) => item.numero.toString()}
-                    renderItem={({ item }) => (
-                        <View style={styles.row}>
-                            <Text style={styles.cell}>{item.numero}</Text>
-                            <Text style={styles.cell}>{item.apellido}</Text>
-                            <Text style={styles.cell}>{item.minJugados}</Text>
-                            <Text style={styles.cell}>{item.setsEC}</Text>
-                            <Text style={styles.cell}>{item.setsAF}</Text>
-                        </View>
-                    )}
-                />
-            )}
-
-
-            {vistaActiva === 'jugador' && (
-                <FlatList
-                    ListHeaderComponent={() => (
-                        <>
-                            <Image source={require("./../../../assets/escudo.png")} style={styles.image} />
-                            <Text style={styles.sectionTitle}>Estadísticas de Jugador</Text>
-                            <View style={[styles.row, styles.header]}>
-                                <Text style={styles.headerCell}>Min. Jugados</Text>
-                                <Text style={styles.headerCell}>Hits</Text>
-                                <Text style={styles.headerCell}>Catchs</Text>
-                                <Text style={styles.headerCell}>Amarilla</Text>
-                                <Text style={styles.headerCell}>Roja</Text>
-                            </View>
-                        </>
-                    )}
-                    data={jugadoresDetalles}
-                    keyExtractor={(item) => item.minJugados.toString()}
-                    renderItem={({ item }) => (
-                        <View style={styles.row}>
-                            <Text style={styles.cell}>{item.minJugados}</Text>
-                            <Text style={styles.cell}>{item.hits}</Text>
-                            <Text style={styles.cell}>{item.catchs}</Text>
-                            <Text style={styles.cell}>{item.amarilla}</Text>
-                            <Text style={styles.cell}>{item.roja}</Text>
-                        </View>
-                    )}
-                />
-            )}
-        </View>
-
-    );
+      {vistaActiva === 'jugador' && user?.statistics && (
+        <>
+          <Image source={require('./../../../assets/escudo.png')} style={styles.image} />
+          <Text style={styles.sectionTitle}>Tus estadísticas</Text>
+          <View style={[styles.row, styles.header]}>
+            <Text style={styles.headerCell}>Min</Text>
+            <Text style={styles.headerCell}>Goles</Text>
+            <Text style={styles.headerCell}>Asist.</Text>
+            <Text style={styles.headerCell}>Tiros</Text>
+            <Text style={styles.headerCell}>A</Text>
+            <Text style={styles.headerCell}>R</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.cell}>{user.statistics.minutesPlayed}</Text>
+            <Text style={styles.cell}>{user.statistics.goals}</Text>
+            <Text style={styles.cell}>{user.statistics.assists}</Text>
+            <Text style={styles.cell}>{user.statistics.shotsOnTarget}</Text>
+            <Text style={styles.cell}>{user.statistics.yellowCards}</Text>
+            <Text style={styles.cell}>{user.statistics.redCards}</Text>
+          </View>
+        </>
+      )}
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({

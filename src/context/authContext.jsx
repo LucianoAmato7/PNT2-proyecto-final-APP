@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { initialUsers } from "../../seed/initialUsers.js";
 
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
@@ -16,12 +17,16 @@ export const AuthProvider = ({ children }) => {
         setUser(JSON.parse(storedUser));
         setIsAuth(true);
       }
+      const usersJSON = await AsyncStorage.getItem("users");
+      if (!usersJSON) {
+        await AsyncStorage.setItem("users", JSON.stringify(initialUsers));
+        console.log("Usuarios iniciales cargados en AsyncStorage");
+      }
     };
     checkAuth();
   }, []);
 
   const register = async (newUser) => {
-    
     try {
       const usersJSON = await AsyncStorage.getItem("users");
       const users = usersJSON ? JSON.parse(usersJSON) : [];
@@ -45,14 +50,12 @@ export const AuthProvider = ({ children }) => {
   // Login con email y contraseña
   const login = async (email, password) => {
     try {
-      const usersJSON = await AsyncStorage.getItem("users");      
+      const usersJSON = await AsyncStorage.getItem("users");
       const users = usersJSON ? JSON.parse(usersJSON) : [];
 
-      console.log("Usuarios registrados:", users);
-      
       const found = users.find(
         (u) => u.email === email && u.password === password
-      );      
+      );
 
       if (found) {
         await AsyncStorage.setItem("currentUser", JSON.stringify(found));
@@ -82,7 +85,7 @@ export const AuthProvider = ({ children }) => {
         login,
         register,
         logout,
-        setUser
+        setUser,
       }}
     >
       {children}
